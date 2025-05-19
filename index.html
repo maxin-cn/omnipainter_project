@@ -1,0 +1,1415 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>OmniPainter</title>
+<link href="./styles/style.css" rel="stylesheet">
+<script type="text/javascript" src="./styles/jquery.mlens-1.0.min.js"></script> 
+<script type="text/javascript" src="./styles/jquery.js"></script>
+
+<style>
+  p.serif{
+    font-family:"Times New Roman", Times, serif;
+  }
+  p.sansserif{
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  h3 {
+      text-align: center;
+    }
+
+</style>
+
+  
+</head>
+
+<body>
+<div class="content">
+
+<h2 style="text-align: center;">
+  <strong>Training-free Stylized Text-to-Image Generation with Fast Inference</strong>
+  <small></small>
+</h2>
+
+<p id="authors" class="serif">
+    <a href="https://maxin-cn.github.io/">Xin Ma<sup>1</sup></a>
+    <a href="https://wyhsirius.github.io/">Yaohui Wang<sup>2<dag></sup></a>
+    <a href="https://scholar.google.com/citations?user=3fWSC8YAAAAJ">Xinyuan Chen<sup>2</sup></a>
+    <a href="https://ttwong12.github.io/myself.html">Tien-Tsin Wong<sup>1</sup></a>
+    <a href="https://cunjian.github.io/">Cunjian Chen<sup>1</sup></a>
+    
+    <br>
+    <!-- <a style="font-size: 0.7em"><sup>*</sup>Equal Contribution.</a> <a style="font-size: 0.7em"><sup>✝</sup>Corresponding Author.</a> -->
+    <br>
+    <span style="font-size: 0.8em; margin-top: 0.5em">
+      <a><sup>1</sup>Monash University</a>
+      <a><sup>2</sup>Shanghai Artificial Intelligence Laboratory</a>
+    </span>
+  </p>
+
+  <font size="+1">
+    <p style="text-align: center;" class="serif">
+      <a href="https://arxiv.org/abs/2407.15642" target="_blank" style="font-weight: bold;">[Paper]</a>&nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="https://github.com/maxin-cn/OmniPainter" target="_blank" style="font-weight: bold;">[Github]</a>&nbsp;&nbsp;&nbsp;&nbsp;
+      <!-- <a href="#bibtex" style="font-weight: bold;">[BibTeX]</a> -->
+    </p><br>
+  </font>
+  <style>
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      
+    }
+
+    
+  
+    .col {
+      flex: 1;
+      text-align: center;
+     
+    }
+
+    .head {
+      flex: 1;
+      text-align: center;
+      
+    }
+
+    h3 {
+      
+      font-size: 15px; /* 缩小标题的大小 */
+      
+    }
+  
+  
+    img, video {
+      width: 100%; /* 将图片和视频的宽度设置为100%，以使它们在同一行上大小相匹配 */
+      height: auto;
+    }
+
+   
+
+  </style>
+
+  <font size="+1">
+    <p class="serif" style="color: red; font-weight: bold">OmniPainter can generate high-quality images that match both the given prompt and the style reference image within just 4 to 6 timesteps, without requiring any inversion!</p>
+  </font>
+
+  <div class="row">
+
+    <div class="head" >
+      <h3 >Reference Styles</h3>
+    </div>
+    
+    <div class="head">
+      <h3></h3>
+    </div>
+
+    <div class="head">
+      <h3>Generated Images (512px)</h3>
+    </div>
+
+    <div class="head">
+      <h3></h3>
+    </div>
+
+
+  </div>
+
+<div class="row">
+    <div class="col">
+      <!-- Style Image 1 -->
+      <img class="case-image" src="static/teaser/style_1.jpg" alt="Case 1 Image" style="width: 100%;">
+      
+    </div>
+    <div class="col">
+      <!-- Generated Image 1 -->
+      <img class="case-image" src="static/teaser/style_1_bear.jpg" alt="Case 1 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 2 -->
+      <img class="case-image" src="static/teaser/style_1_bridge.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 3 -->
+      <img class="case-image" src="static/teaser/style_1_girl.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+
+    
+  </div>
+
+  <div class="row">
+
+    <div class="head" >
+      <h3 ></h3>
+    </div>
+
+    <div class="head">
+      <h3>"Bear"</h3>
+    </div>
+    
+    <div class="head">
+      <h3>"Bridge"</h3>
+    </div>
+
+    <div class="head">
+      <h3>"Girl"</h3>
+    </div>
+
+
+
+  </div>
+  
+  <div class="row">
+    <div class="col">
+      <!-- Case 1 Image -->
+      <img class="case-image" src="static/teaser/style_6.jpg" alt="Case 1 Image" style="width: 100%;">
+    </div>
+
+    <div class="col">
+      <!-- Case 1 Video -->
+      <img class="case-image" src="static/teaser/style_6_beaver.jpg" alt="Case 1 Image" style="width: 100%;">
+    </div>
+
+    <div class="col">
+      <!-- Case 2 Image -->
+      <img class="case-image" src="static/teaser/style_6_boy.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+
+    <div class="col">
+      <!-- Case 2 Video -->
+      <img class="case-image" src="static/teaser/style_6_mushrooms.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+
+
+  </div>
+
+  <div class="row">
+
+    <div class="head">
+      <h3></h3>
+    </div>
+
+    <div class="head">
+      <h3>"Beaver"</h3>
+    </div>
+    
+    <div class="head">
+      <h3>"Boy"</h3>
+    </div>
+
+    <div class="head">
+      <h3>"Mushrooms"</h3>
+    </div>
+
+
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <!-- Case 1 Image -->
+      <img class="case-image" src="static/teaser/style_8.jpg" alt="Case 1 Image" style="width: 100%;">
+    </div>
+
+    <div class="col">
+      <!-- Case 1 Video -->
+      <img class="case-image" src="static/teaser/style_8_mountain.jpg" alt="Case 1 Image" style="width: 100%;">
+    </div>
+
+    <div class="col">
+      <!-- Case 2 Image -->
+      <img class="case-image" src="static/teaser/style_8_pickup_truck.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+
+    <div class="col">
+      <!-- Case 2 Video -->
+      <img class="case-image" src="static/teaser/style_8_rabbit.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+
+
+  </div>
+
+  <div class="row">
+
+    <div class="head">
+      <h3></h3>
+    </div>
+
+    <div class="head">
+      <h3>"Mountain"</h3>
+    </div>
+    
+    <div class="head">
+      <h3>"Pickup truck"</h3>
+    </div>
+
+    <div class="head">
+      <h3>"Rabbit"</h3>
+    </div>
+
+
+  </div>
+
+</p>
+
+  
+
+</div>
+
+<div class="content">
+    <p style="text-align:left; font-size: 2em; font-weight: bold" class="serif">Methodology</p>
+    <div class="container is-max-desktop">
+        <div class="hero-body">
+            <center>
+                  <img src="static/figs/pipeline.svg" title="" style="max-width:100%;vertical-align:top"/>
+            </center>
+        </div>
+      </div>
+    
+    <p style="font-size: 1.4em" class="serif">
+      Although diffusion models exhibit impressive generative capabilities, 
+      existing methods for stylized image generation based on these models often require textual inversion or fine-tuning with style images, 
+      which is time-consuming and limits the practical applicability of large-scale diffusion models. To address these challenges, we propose a 
+      novel stylized image generation method leveraging a pre-trained large-scale diffusion model without requiring fine-tuning or any additional 
+      optimization, termed as OmniPainter. Specifically, we exploit the self-consistency property of latent consistency models to extract 
+      the representative style statistics from reference style images to guide the stylization process. Additionally, we then introduce the 
+      norm mixture of self-attention, which enables the model to query the most relevant style patterns from these statistics for the intermediate 
+      output content features. This mechanism also ensures that the stylized results align closely with the distribution of the reference style images. 
+
+    
+</div>
+
+
+
+
+
+<div class="content">
+  <p style="text-align:left; font-size: 2em; font-weight: bold" class="serif">Comparisons</p>
+  <p style="font-size: 1.4em" class="serif">
+    We shows the results generated by different methods.<br>
+    We qualitatively compare our method with both personalized text-to-image generation methods and style transfer methods,
+    including DEADiff, Custom Diffusion, DreamBooth, StyleDrop, InstaStyle, AdaAttn, CCPL, StyleID, CAST and AesPA-Net.
+  </p>
+  <font size="+1">
+    <p class="serif" style="color: red; font-weight: bold">Compared to personalized text-to-image generation methods!</p>
+  </font>
+
+  <font size="+1">
+  <p class="serif">From top to bottom, the used prompts are "Couch", "Bus", "Sweet peppers", "Castle", "Woman driving lawn mower", "Clouds", "Dinosaur" and "Raccoon", respectively.</p>
+  </font>
+
+  <div class="row">
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/abandoned_cars_1/style.jpg" style="width: 100%;">
+      <!-- <h3>Reference</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/abandoned_cars_1/couch_deadiff.jpg" style="width: 100%;">
+      <!-- <h3>Text Inversion</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/abandoned_cars_1/couch_cus-diff.jpg" style="width: 100%;">
+      <!-- <h3>Custom Diffusion</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/abandoned_cars_1/couch_dreambooth.jpg" style="width: 100%;">
+      <!-- <h3>DreamBooth</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/abandoned_cars_1/couch_styledrop.jpg" style="width: 100%;">
+      <!-- <h3>StyleDrop</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/abandoned_cars_1/couch_instastyle.jpg" style="width: 100%;">
+      <!-- <h3>InstaStyle</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/abandoned_cars_1/couch_ours.jpg" style="width: 100%;">
+      <!-- <h3>Ours</h3> -->
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/aurora_mountain_6/style.jpg" style="width: 100%;">
+      <!-- <h3>Reference</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/aurora_mountain_6/bus_deadiff.jpg" style="width: 100%;">
+      <!-- <h3>Text Inversion</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/aurora_mountain_6/bus_cus-diff.jpg" style="width: 100%;">
+      <!-- <h3>Custom Diffusion</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/aurora_mountain_6/bus_dreambooth.jpg" style="width: 100%;">
+      <!-- <h3>DreamBooth</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/aurora_mountain_6/bus_styledrop.jpg" style="width: 100%;">
+      <!-- <h3>StyleDrop</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/aurora_mountain_6/bus_instastyle.jpg" style="width: 100%;">
+      <!-- <h3>InstaStyle</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/aurora_mountain_6/bus_ours.jpg" style="width: 100%;">
+      <!-- <h3>Ours</h3> -->
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/chinese_inkpainting_mountain_3/style.jpg" style="width: 100%;">
+      <!-- <h3>Reference</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/chinese_inkpainting_mountain_3/sweet_peppers_deadiff.jpg" style="width: 100%;">
+      <!-- <h3>Text Inversion</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/chinese_inkpainting_mountain_3/sweet_peppers_cus-diff.jpg" style="width: 100%;">
+      <!-- <h3>Custom Diffusion</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/chinese_inkpainting_mountain_3/sweet_peppers_dreambooth.jpg" style="width: 100%;">
+      <!-- <h3>DreamBooth</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/chinese_inkpainting_mountain_3/sweet_peppers_styledrop.jpg" style="width: 100%;">
+      <!-- <h3>StyleDrop</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/chinese_inkpainting_mountain_3/sweet_peppers_instastyle.jpg" style="width: 100%;">
+      <!-- <h3>InstaStyle</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/chinese_inkpainting_mountain_3/sweet_peppers_ours.jpg" style="width: 100%;">
+      <!-- <h3>Ours</h3> -->
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/inkpainting_mountain/style.jpg" style="width: 100%;">
+      <!-- <h3>Reference</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/inkpainting_mountain/castle_deadiff.jpg" style="width: 100%;">
+      <!-- <h3>Text Inversion</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/inkpainting_mountain/castle_cus-diff.jpg" style="width: 100%;">
+      <!-- <h3>Custom Diffusion</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/inkpainting_mountain/castle_dreambooth.jpg" style="width: 100%;">
+      <!-- <h3>DreamBooth</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/inkpainting_mountain/castle_styledrop.jpg" style="width: 100%;">
+      <!-- <h3>StyleDrop</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/inkpainting_mountain/castle_instastyle.jpg" style="width: 100%;">
+      <!-- <h3>InstaStyle</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/inkpainting_mountain/castle_ours1.jpg" style="width: 100%;">
+      <!-- <h3>Ours</h3> -->
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/oilpainting_appletree_1/style.jpg" style="width: 100%;">
+      <!-- <h3>Reference</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/oilpainting_appletree_1/woman_driving_lawn_mower_deadiff.jpg" style="width: 100%;">
+      <!-- <h3>Text Inversion</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/oilpainting_appletree_1/woman_driving_lawn_mower_cus-diff.jpg" style="width: 100%;">
+      <!-- <h3>Custom Diffusion</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/oilpainting_appletree_1/woman_driving_lawn_mower_dreambooth.jpg" style="width: 100%;">
+      <!-- <h3>DreamBooth</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/oilpainting_appletree_1/woman_driving_lawn_mower_styledrop.jpg" style="width: 100%;">
+      <!-- <h3>StyleDrop</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/oilpainting_appletree_1/woman_driving_lawn_mower_instastyle.jpg" style="width: 100%;">
+      <!-- <h3>InstaStyle</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/oilpainting_appletree_1/woman_driving_lawn_mower_ours.jpg" style="width: 100%;">
+      <!-- <h3>Ours</h3> -->
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/van_gogh_painting_house_7/style.jpg" style="width: 100%;">
+      <!-- <h3>Reference</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/van_gogh_painting_house_7/cloud_deadiff.jpg" style="width: 100%;">
+      <!-- <h3>Text Inversion</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/van_gogh_painting_house_7/clouds_cus-diff.jpg" style="width: 100%;">
+      <!-- <h3>Custom Diffusion</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/van_gogh_painting_house_7/cloud_dreambooth.jpg" style="width: 100%;">
+      <!-- <h3>DreamBooth</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/van_gogh_painting_house_7/clouds_styledrop.jpg" style="width: 100%;">
+      <!-- <h3>StyleDrop</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/van_gogh_painting_house_7/clouds_instastyle.jpg" style="width: 100%;">
+      <!-- <h3>InstaStyle</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/van_gogh_painting_house_7/cloud_ours.jpg" style="width: 100%;">
+      <!-- <h3>Ours</h3> -->
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/watercolor_dogs_5/style.jpg" style="width: 100%;">
+      <!-- <h3>Reference</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/watercolor_dogs_5/dinosaur_deadiff.jpg" style="width: 100%;">
+      <!-- <h3>Text Inversion</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/watercolor_dogs_5/dinosaur_cus-diff.jpg" style="width: 100%;">
+      <!-- <h3>Custom Diffusion</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/watercolor_dogs_5/dinosaur_dreambooth.jpg" style="width: 100%;">
+      <!-- <h3>DreamBooth</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/watercolor_dogs_5/dinosaur_styledrop.jpg" style="width: 100%;">
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/watercolor_dogs_5/dinosaur_instastyle.jpg" style="width: 100%;">
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/watercolor_dogs_5/dinosaur_ours.jpg" style="width: 100%;">
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/watercolor_images_2/style.jpg" style="width: 100%;">
+      <h3>Reference</h3>
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/watercolor_images_2/raccoon_deadiff.jpg" style="width: 100%;">
+      <!-- <h3>Text Inversion</h3> -->
+      <h3>DEADiff</h3>
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/watercolor_images_2/raccoon_cus-diff.jpg" style="width: 100%;">
+      <h3>Custom Diffusion</h3>
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/watercolor_images_2/raccoon_dreambooth.jpg" style="width: 100%;">
+      <h3>DreamBooth</h3>
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/watercolor_images_2/raccoon_styledrop.jpg" style="width: 100%;">
+      <h3>StyleDrop</h3>
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/watercolor_images_2/raccoon_instastyle.jpg" style="width: 100%;">
+      <h3>InstaStyle</h3>
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_stylized_t2i/watercolor_images_2/raccoon_ours1.jpg" style="width: 100%;">
+      <h3>Ours</h3>
+    </div>
+
+  </div>
+
+  <hr style="margin: 30px 0;">
+
+  <font size="+1">
+    <p class="serif" style="color: red; font-weight: bold">Compared to neural image style transfer methods!</p>
+  </font>
+
+  <font size="+1">
+  <p class="serif">We first use "bed", "bridge", "tank", "camel", "fox" and "butterfly" as the prompts to generate the corresponding content images by using the base text-to-image model. 
+    Then, applying 
+  </p>
+  </font>
+
+  <div class="row">
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/abandoned_cars_3/style.jpg" style="width: 100%;">
+      <!-- <h3>Reference</h3> -->
+    </div>
+
+    <div class="col" >
+    <div class="image-container" style="position: relative; display: inline-block;">
+      <img src="static/comparisons/with_style_transfer/abandoned_cars_3/bed.jpg" style="width: 100%;">
+      <div style="position: absolute; bottom: 10px; left: 10px; color: white; font-style: italic; font-weight: bold; font-size: 1.2em;">
+        bed
+      </div>
+    </div>
+    <!-- <h3>Content</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/abandoned_cars_3/bed_aespanet.jpg" style="width: 100%;">
+      <!-- <h3>AesPA-Net</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/abandoned_cars_3/bed_cast.jpg" style="width: 100%;">
+      <!-- <h3>CAST</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/abandoned_cars_3/bed_styleid.jpg" style="width: 100%;">
+      <!-- <h3>StyleID</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/abandoned_cars_3/bed_ccpl.jpg" style="width: 100%;">
+      <!-- <h3>CCPL</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/abandoned_cars_3/bed_ours1.jpg" style="width: 100%;">
+      <!-- <h3>Ours</h3> -->
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/aurora_mountain_2/style.jpg" style="width: 100%;">
+      <!-- <h3>Reference</h3> -->
+    </div>
+
+    <div class="col" >
+    <div class="image-container" style="position: relative; display: inline-block;">
+      <img src="static/comparisons/with_style_transfer/aurora_mountain_2/bridge.jpg" style="width: 100%;">
+      <div style="position: absolute; bottom: 10px; left: 10px; color: white; font-style: italic; font-weight: bold; font-size: 1.2em;">
+        bridge
+      </div>
+    </div>
+    <!-- <h3>Content</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/aurora_mountain_2/bridge_aespanet.jpg" style="width: 100%;">
+      <!-- <h3>AesPA-Net</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/aurora_mountain_2/bridge_cast.jpg" style="width: 100%;">
+      <!-- <h3>CAST</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/aurora_mountain_2/bridge_styleid.jpg" style="width: 100%;">
+      <!-- <h3>StyleID</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/aurora_mountain_2/bridge_ccpl.jpg" style="width: 100%;">
+      <!-- <h3>CCPL</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/aurora_mountain_2/bridge_ours.jpg" style="width: 100%;">
+      <!-- <h3>Ours</h3> -->
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/chinese_inkpainting_mountain_4/style.jpg" style="width: 100%;">
+      <!-- <h3>Reference</h3> -->
+    </div>
+
+    <div class="col" >
+    <div class="image-container" style="position: relative; display: inline-block;">
+      <img src="static/comparisons/with_style_transfer/chinese_inkpainting_mountain_4/tank.jpg" style="width: 100%;">
+      <div style="position: absolute; bottom: 10px; left: 10px; color: white; font-style: italic; font-weight: bold; font-size: 1.2em;">
+        tank
+      </div>
+    </div>
+    <!-- <h3>Content</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/chinese_inkpainting_mountain_4/tank_aespanet.jpg" style="width: 100%;">
+      <!-- <h3>AesPA-Net</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/chinese_inkpainting_mountain_4/tank_cast.jpg" style="width: 100%;">
+      <!-- <h3>CAST</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/chinese_inkpainting_mountain_4/tank_styleid.jpg" style="width: 100%;">
+      <!-- <h3>StyleID</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/chinese_inkpainting_mountain_4/tank_ccpl.jpg" style="width: 100%;">
+      <!-- <h3>CCPL</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/chinese_inkpainting_mountain_4/tank_ours3.jpg" style="width: 100%;">
+      <!-- <h3>Ours</h3> -->
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/inkpainting_mountain_2/style.jpg" style="width: 100%;">
+      <!-- <h3>Reference</h3> -->
+    </div>
+
+    <div class="col" >
+    <div class="image-container" style="position: relative; display: inline-block;">
+      <img src="static/comparisons/with_style_transfer/inkpainting_mountain_2/camel.jpg" style="width: 100%;">
+      <div style="position: absolute; bottom: 10px; left: 10px; color: white; font-style: italic; font-weight: bold; font-size: 1.2em;">
+        camel
+      </div>
+    </div>
+    <!-- <h3>Content</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/inkpainting_mountain_2/camel_aespanet.jpg" style="width: 100%;">
+      <!-- <h3>AesPA-Net</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/inkpainting_mountain_2/camel_cast.jpg" style="width: 100%;">
+      <!-- <h3>CAST</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/inkpainting_mountain_2/camel_styleid.jpg" style="width: 100%;">
+      <!-- <h3>StyleID</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/inkpainting_mountain_2/camel_ccpl.jpg" style="width: 100%;">
+      <!-- <h3>CCPL</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/inkpainting_mountain_2/camel_ours.jpg" style="width: 100%;">
+      <!-- <h3>Ours</h3> -->
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/van_gogh_painting_house_2/style.jpg" style="width: 100%;">
+      <!-- <h3>Reference</h3> -->
+    </div>
+
+    <div class="col" >
+    <div class="image-container" style="position: relative; display: inline-block;">
+      <img src="static/comparisons/with_style_transfer/van_gogh_painting_house_2/fox.jpg" style="width: 100%;">
+      <div style="position: absolute; bottom: 10px; left: 10px; color: white; font-style: italic; font-weight: bold; font-size: 1.2em;">
+        fox
+      </div>
+    </div>
+    <!-- <h3>Content</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/van_gogh_painting_house_2/fox_aespanet.jpg" style="width: 100%;">
+      <!-- <h3>AesPA-Net</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/van_gogh_painting_house_2/fox_cast.jpg" style="width: 100%;">
+      <!-- <h3>CAST</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/van_gogh_painting_house_2/fox_styleid.jpg" style="width: 100%;">
+      <!-- <h3>StyleID</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/van_gogh_painting_house_2/fox_ccpl.jpg" style="width: 100%;">
+      <!-- <h3>CCPL</h3> -->
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/van_gogh_painting_house_2/fox_ours.jpg" style="width: 100%;">
+      <!-- <h3>Ours</h3> -->
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/watercolor_images_13/style.jpg" style="width: 100%;">
+      <h3>Reference</h3>
+    </div>
+
+    <div class="col" >
+    <div class="image-container" style="position: relative; display: inline-block;">
+      <img src="static/comparisons/with_style_transfer/watercolor_images_13/butterfly.jpg" style="width: 100%;">
+      <div style="position: absolute; bottom: 10px; left: 10px; color: white; font-style: italic; font-weight: bold; font-size: 1.2em;">
+        butterfly
+      </div>
+    </div>
+    <h3>Content</h3>
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/watercolor_images_13/butterfly_aespanet.jpg" style="width: 100%;">
+      <h3>AesPA-Net</h3>
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/watercolor_images_13/butterfly_cast.jpg" style="width: 100%;">
+      <h3>CAST</h3>
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/watercolor_images_13/butterfly_styleid.jpg" style="width: 100%;">
+      <h3>StyleID</h3>
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/watercolor_images_13/butterfly_ccpl.jpg" style="width: 100%;">
+      <h3>CCPL</h3>
+    </div>
+
+    <div class="col" >
+      <img src="static/comparisons/with_style_transfer/watercolor_images_13/butterfly_ours.jpg" style="width: 100%;">
+      <h3>Ours</h3>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="content">
+  <p style="text-align:left; font-size: 2em; font-weight: bold" class="serif">Analysis</p>
+  <p style="font-size: 1.4em" class="serif">
+    The ablation analysis is presented below.
+  </p>
+  <p style="text-align:left; font-size: 1.6em; font-weight: bold" class="serif">Effects of different attention controls</p>
+  <p style="font-size: 1.4em" class="serif">
+    We discuss three different attention control strategies: direct replacement, direct addition, and a mixture of self-attention, and analyze their limitations.
+    To address these issues, we propose a normalized mixture of self-attention.
+  </p>
+
+  <p style="font-size: 1.4em" class="serif">
+    <em>Issures of the direct replacement.</em>
+    It tends to prioritize style statistics at the expense of the semantic information derived from the prompt.
+  </p>
+
+  <div class="row">
+    <div class="col-gallery" style="width: 20%;">
+      <!-- <img src="static/comparisons/with_style_transfer/van_gogh_painting_house_2/style.jpg" style="width: 80%;"> -->
+      <img src="static/issues_three_methods/method_1/watercolor_dogs_1.jpg">
+      <h3>Style reference</h3>
+    </div>
+
+    <div class="col-gallery" style="width: 20%;">
+      <img src="static/issues_three_methods/method_1/girl.jpg">
+      <h3>Girl</h3>
+    </div>
+    <div class="col-gallery" style="width: 20%;">
+      <img src="static/issues_three_methods/method_1/house.jpg" >
+      <h3>House</h3>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-gallery" style="width: 20%;">
+      <!-- <img src="static/comparisons/with_style_transfer/van_gogh_painting_house_2/style.jpg" style="width: 80%;"> -->
+      <img src="static/issues_three_methods/method_1/girl_watercolor_dogs_1_stylized_time_499_resnet.jpg">
+      <h3>Resnet block</h3>
+    </div>
+
+    <div class="col-gallery" style="width: 20%;">
+      <img src="static/issues_three_methods/method_1/girl_watercolor_dogs_1_stylized_time_499_q.jpg">
+      <h3>Query</h3>
+    </div>
+    <div class="col-gallery" style="width: 20%;">
+      <img src="static/issues_three_methods/method_1/girl_time_499_attn_map.jpg" >
+      <h3>Self-attention map</h3>
+    </div>
+
+  </div>
+
+  <p style="font-size: 1.4em" class="serif">
+    <em>Issures of the direct addition.</em> 
+    It is less robust and highly dependent on the choice of balance factors.
+  </p>
+
+  <div class="row">
+    <div class="col-gallery" style="width: 20%;">
+      <!-- <img src="static/comparisons/with_style_transfer/van_gogh_painting_house_2/style.jpg" style="width: 80%;"> -->
+      <img src="static/issues_three_methods/method_2/aurora_mountain_7.jpg">
+      <!-- <h3>Style reference</h3> -->
+    </div>
+
+    <div class="col-gallery" style="width: 20%;">
+      <img src="static/issues_three_methods/method_2/aurora_mountain_7_apples.jpg">
+      <!-- <h3>Girl</h3> -->
+    </div>
+    <div class="col-gallery" style="width: 20%;">
+      <img src="static/issues_three_methods/method_2/aurora_mountain_7_butterfly.jpg" >
+      <!-- <h3>House</h3> -->
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-gallery" style="width: 20%;">
+      <!-- <img src="static/comparisons/with_style_transfer/van_gogh_painting_house_2/style.jpg" style="width: 80%;"> -->
+      <img src="static/issues_three_methods/method_2/van_gogh_starry_house_1.jpg">
+      <h3>Style reference</h3>
+    </div>
+
+    <div class="col-gallery" style="width: 20%;">
+      <img src="static/issues_three_methods/method_2/van_gogh_starry_hous_1_apples.jpg">
+      <h3>Apples</h3>
+    </div>
+    <div class="col-gallery" style="width: 20%;">
+      <img src="static/issues_three_methods/method_2/van_gogh_starry_house_1_butterfly.jpg" >
+      <h3>Butterfly</h3>
+    </div>
+
+  </div>
+
+  <p style="font-size: 1.4em" class="serif">
+    <em>Effect of Norm mixture of self-attention.</em>
+    Mixture of self-attention can sometimes result in a mismatch between the global style distribution of the reference style image and the generated image (the first line).
+    Norm mixture of self-attention can effectively mitigate this issue (the second line).
+  </p>
+
+  <div class="row">
+    <div class="col-gallery" style="width: 20%;">
+      <!-- <img src="static/comparisons/with_style_transfer/van_gogh_painting_house_2/style.jpg" style="width: 80%;"> -->
+      <img src="static/issues_three_methods/method_3/mountain.jpg">
+      <!-- <h3>Style reference</h3> -->
+    </div>
+
+    <div class="col-gallery" style="width: 20%;">
+      <img src="static/issues_three_methods/method_3/no_style_norm/apples.jpg">
+      <!-- <h3>Girl</h3> -->
+    </div>
+
+    <div class="col-gallery" style="width: 20%;">
+      <img src="static/issues_three_methods/method_3/no_style_norm/bird.jpg" >
+      <!-- <h3>House</h3> -->
+    </div>
+
+    <div class="col-gallery" style="width: 20%;">
+      <img src="static/issues_three_methods/method_3/no_style_norm/lion.jpg" >
+      <!-- <h3>House</h3> -->
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-gallery" style="width: 20%;">
+      <!-- <img src="static/comparisons/with_style_transfer/van_gogh_painting_house_2/style.jpg" style="width: 80%;"> -->
+      <img src="static/issues_three_methods/method_3/mountain.jpg">
+      <h3>Style reference</h3>
+    </div>
+
+    <div class="col-gallery" style="width: 20%;">
+      <img src="static/issues_three_methods/method_3/with_style_norm/apples.jpg">
+      <h3>Apples</h3>
+    </div>
+    
+    <div class="col-gallery" style="width: 20%;">
+      <img src="static/issues_three_methods/method_3/with_style_norm/bird.jpg" >
+      <h3>Butterfly</h3>
+    </div>
+
+    <div class="col-gallery" style="width: 20%;">
+      <img src="static/issues_three_methods/method_3/with_style_norm/lion.jpg" >
+      <h3>Butterfly</h3>
+    </div>
+
+  </div>
+
+  <!-- <hr style="margin: 30px 0;"> -->
+
+  <p style="font-size: 1.4em" class="serif">
+    <em>Ovearall effect of different attention controls.</em>
+  </p>
+
+  <div class="row">
+    <div class="col-gallery" style="width: 20%;">
+      <!-- <img src="static/comparisons/with_style_transfer/van_gogh_painting_house_2/style.jpg" style="width: 80%;"> -->
+      <img src="static/analysis_different_ac/9.jpg">
+      <h3>Style reference</h3>
+    </div>
+
+    <div class="col-gallery" style="width: 20%;">
+      <img src="static/analysis_different_ac/pickup_truck_eq9.jpg">
+      <h3>Direct replacement</h3>
+    </div>
+
+    <div class="col-gallery" style="width: 20%;">
+      <img src="static/analysis_different_ac/pickup_truck_eq10.jpg" >
+      <h3>Direct addition</h3>
+    </div>
+
+    <div class="col-gallery" style="width: 20%;">
+      <img src="static/analysis_different_ac/pickup_truck_eq13.jpg" >
+      <h3>Mixture of self-attention</h3>
+    </div>
+
+    <div class="col-gallery" style="width: 20%;">
+      <img src="static/analysis_different_ac/pickup_truck_eq1314.jpg" >
+      <h3>Norm MSA</h3>
+    </div>
+
+  </div>
+
+
+  <hr style="margin: 30px 0;">
+
+  <p style="text-align:left; font-size: 1.6em; font-weight: bold" class="serif">The comparison of performance and efficiency</p>
+    <div class="container is-max-desktop">
+        <div class="hero-body">
+            <center>
+                  <img src="static/figs/performance_vs_efficiency.svg" title="" style="max-width:100%;vertical-align:top"/>
+            </center>
+        </div>
+    </div>
+    <p style="font-size: 1.4em" class="serif">
+    The  size of the colored circle reflects performance: the larger the colored circle, the better the performance,
+     and vice versa.  Our method   delivers exceptional performance results without the need for fine-tuning 
+     and achieves the shortest inference time.
+</div>
+
+
+
+<div class="content">
+    <p style="text-align:left; font-size: 2em; font-weight: bold" class="serif">Gallery</p>
+    <p style="font-size: 1.4em" class="serif">
+        More results (512px) generated by our method, using diverse style reference images, are shown here.<br>
+    </p>
+
+  <div class="row">
+
+    <div class="head" >
+      <h3 >Reference Styles</h3>
+    </div>
+
+    <div class="head">
+      <h3></h3>
+    </div>
+    
+    <div class="head">
+      <h3></h3>
+    </div>
+
+    <div class="head">
+      <h3>Generated Images</h3>
+    </div>
+
+    <div class="head">
+      <h3></h3>
+    </div>
+
+    <div class="head">
+      <h3></h3>
+    </div>
+
+  </div>
+
+<div class="row">
+    <div class="col">
+      <!-- Style Image 1 -->
+      <img class="case-image" src="static/gallery/jackson-pollock_untitled-o-connor-thaw-771(1)/jackson-pollock_untitled-o-connor-thaw-771(1).jpg" alt="Case 1 Image" style="width: 100%;">
+      
+    </div>
+    <div class="col">
+      <!-- Generated Image 1 -->
+      <img class="case-image" src="static/gallery/jackson-pollock_untitled-o-connor-thaw-771(1)/Antelope.jpg" alt="Case 1 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 2 -->
+      <img class="case-image" src="static/gallery/jackson-pollock_untitled-o-connor-thaw-771(1)/barbecue_grill.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 3 -->
+      <img class="case-image" src="static/gallery/jackson-pollock_untitled-o-connor-thaw-771(1)/lamp.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 4 -->
+      <img class="case-image" src="static/gallery/jackson-pollock_untitled-o-connor-thaw-771(1)/leopard.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 5 -->
+      <img class="case-image" src="static/gallery/jackson-pollock_untitled-o-connor-thaw-771(1)/man.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="head" >
+      <h3 ></h3>
+    </div>
+
+    <div class="head">
+      <h3>"Antelope"</h3>
+    </div>
+    
+    <div class="head">
+      <h3>"Barbecue grill"</h3>
+    </div>
+
+    <div class="head">
+      <h3>"Lamp"</h3>
+    </div>
+
+    <div class="head">
+      <h3>"Leopard"</h3>
+    </div>
+
+    <div class="head">
+      <h3>"Man"</h3>
+    </div>
+
+  </div>
+
+<div class="row">
+    <div class="col">
+      <!-- Style Image 1 -->
+      <img class="case-image" src="static/gallery/sam-francis_untitled-sf-84-045-1984/sam-francis_untitled-sf-84-045-1984-resize.jpg" alt="Case 1 Image" style="width: 100%;">
+      
+    </div>
+    <div class="col">
+      <!-- Generated Image 1 -->
+      <img class="case-image" src="static/gallery/sam-francis_untitled-sf-84-045-1984/bed.jpg" alt="Case 1 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 2 -->
+      <img class="case-image" src="static/gallery/sam-francis_untitled-sf-84-045-1984/bottles.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 3 -->
+      <img class="case-image" src="static/gallery/sam-francis_untitled-sf-84-045-1984/Chameleon.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 4 -->
+      <img class="case-image" src="static/gallery/sam-francis_untitled-sf-84-045-1984/couch.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 5 -->
+      <img class="case-image" src="static/gallery/sam-francis_untitled-sf-84-045-1984/mountain.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="head" >
+      <h3 ></h3>
+    </div>
+
+    <div class="head">
+      <h3>"Bed"</h3>
+    </div>
+    
+    <div class="head">
+      <h3>"Bottles"</h3>
+    </div>
+
+    <div class="head">
+      <h3>"Chameleon"</h3>
+    </div>
+
+    <div class="head">
+      <h3>"Couch"</h3>
+    </div>
+
+    <div class="head">
+      <h3>"Mountain"</h3>
+    </div>
+
+  </div>
+  
+<div class="row">
+    <div class="col">
+      <!-- Style Image 1 -->
+      <img class="case-image" src="static/gallery/franz-kline_mahoning-1956/franz-kline_mahoning-1956.jpg" alt="Case 1 Image" style="width: 100%;">
+      
+    </div>
+    <div class="col">
+      <!-- Generated Image 1 -->
+      <img class="case-image" src="static/gallery/franz-kline_mahoning-1956/castle.jpg" alt="Case 1 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 2 -->
+      <img class="case-image" src="static/gallery/franz-kline_mahoning-1956/Fence.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 3 -->
+      <img class="case-image" src="static/gallery/franz-kline_mahoning-1956/house.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 4 -->
+      <img class="case-image" src="static/gallery/franz-kline_mahoning-1956/Laptop.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 5 -->
+      <img class="case-image" src="static/gallery/franz-kline_mahoning-1956/palm_tree.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="head" >
+      <h3 ></h3>
+    </div>
+
+    <div class="head">
+      <h3>"Castle"</h3>
+    </div>
+    
+    <div class="head">
+      <h3>"Fence"</h3>
+    </div>
+
+    <div class="head">
+      <h3>"House"</h3>
+    </div>
+
+    <div class="head">
+      <h3>"Laptop"</h3>
+    </div>
+
+    <div class="head">
+      <h3>"Palm tree"</h3>
+    </div>
+
+  </div>
+
+<div class="row">
+    <div class="col">
+      <!-- Style Image 1 -->
+      <img class="case-image" src="static/gallery/franz-kline_untitled/franz-kline_untitled-resize.jpg" alt="Case 1 Image" style="width: 100%;">
+      
+    </div>
+    <div class="col">
+      <!-- Generated Image 1 -->
+      <img class="case-image" src="static/gallery/franz-kline_untitled/bowls.jpg" alt="Case 1 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 2 -->
+      <img class="case-image" src="static/gallery/franz-kline_untitled/Cactus.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 3 -->
+      <img class="case-image" src="static/gallery/franz-kline_untitled/cattle.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 4 -->
+      <img class="case-image" src="static/gallery/franz-kline_untitled/Cherry_Blossom.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 5 -->
+      <img class="case-image" src="static/gallery/franz-kline_untitled/Crane.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="head" >
+      <h3 ></h3>
+    </div>
+
+    <div class="head">
+      <h3>"Bowls"</h3>
+    </div>
+    
+    <div class="head">
+      <h3>"Cactus"</h3>
+    </div>
+
+    <div class="head">
+      <h3>"Cattle"</h3>
+    </div>
+
+    <div class="head">
+      <h3>"Cherry blossom"</h3>
+    </div>
+
+    <div class="head">
+      <h3>"Crane"</h3>
+    </div>
+
+  </div>
+
+<div class="row">
+    <div class="col">
+      <!-- Style Image 1 -->
+      <img class="case-image" src="static/gallery/jackson-pollock_untitled-1951-1/jackson-pollock_untitled-1951-1.jpg" alt="Case 1 Image" style="width: 100%;">
+      
+    </div>
+    <div class="col">
+      <!-- Generated Image 1 -->
+      <img class="case-image" src="static/gallery/jackson-pollock_untitled-1951-1/bear.jpg" alt="Case 1 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 2 -->
+      <img class="case-image" src="static/gallery/jackson-pollock_untitled-1951-1/beetle_car.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 3 -->
+      <img class="case-image" src="static/gallery/jackson-pollock_untitled-1951-1/Duck.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 4 -->
+      <img class="case-image" src="static/gallery/jackson-pollock_untitled-1951-1/girl.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+    <div class="col">
+      <!-- Generated Image 5 -->
+      <img class="case-image" src="static/gallery/jackson-pollock_untitled-1951-1/Hedgehog.jpg" alt="Case 2 Image" style="width: 100%;">
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="head" >
+      <h3 ></h3>
+    </div>
+
+    <div class="head">
+      <h3>"Bear"</h3>
+    </div>
+    
+    <div class="head">
+      <h3>"Beetle car"</h3>
+    </div>
+
+    <div class="head">
+      <h3>"Duck"</h3>
+    </div>
+
+    <div class="head">
+      <h3>"Girl"</h3>
+    </div>
+
+    <div class="head">
+      <h3>"Hedgehog"</h3>
+    </div>
+
+  </div>
+
+  </div>
+
+
+<div class="content">
+  <p class="serif">
+    Project page template is borrowed from <a href="https://dreambooth.github.io/">DreamBooth</a>.
+  </p>
+</div>
+
+</body>
+
+<script>
+var videos = document.getElementsByClassName("clickplay");
+for (var i = 0; i < videos.length; i++) {
+  videos[i].addEventListener("click", function() {
+    this.play();
+  });
+  videos[i].addEventListener("ended", function() {
+    this.pause();
+    this.currentTime = 0;
+  });
+}
+</script>
+
+</html>
